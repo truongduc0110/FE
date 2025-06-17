@@ -1,0 +1,41 @@
+{
+  "name": "shoponline",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "@headlessui/vue": "^1.7.22",
+    "@heroicons/vue": "^2.1.5",
+    "@mdi/font": "^7.4.47",
+    "@splidejs/splide": "^4.1.4",
+    "@splidejs/vue-splide": "^0.6.12",
+    "@tinymce/tinymce-vue": "^5.1.1",
+    "chart.js": "^4.4.9",
+    "element-plus": "^2.7.8",
+    "js-cookie": "^3.0.5",
+    "oh-vue-icons": "^1.0.0-rc3",
+    "pinia": "^2.2.1",
+    "uuid": "^11.1.0",
+    "vue": "^3.4.31",
+    "vue-chartjs": "^5.3.2",
+    "vue-recaptcha-v3": "^2.0.1",
+    "vue-router": "^4.4.0",
+    "vue3-recaptcha-v2": "^2.1.0"
+  },
+  "devDependencies": {
+    "@element-plus/nuxt": "^1.0.9",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.40",
+    "tailwindcss": "^3.4.7",
+    "vite": "^5.3.4",
+    "vite-plugin-vuetify": "^2.0.4",
+    "vuetify": "^3.7.0"
+  }
+}
