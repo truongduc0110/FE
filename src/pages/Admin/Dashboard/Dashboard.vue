@@ -47,7 +47,10 @@
             <div class="text-2xl font-bold">{{ dataOrdersConfirmed.length }}</div>
           </div>
         </div>
-        <div class="bg-[#E7F9E9] h-32 rounded-lg p-3 flex flex-col justify-between">
+        <div
+            class="h-32 rounded-lg p-3 flex flex-col justify-between transition-all duration-500"
+            :class="revenueClass"
+        >
           <div class="bg-white w-8 h-8 flex justify-center items-center rounded-md">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M10.0478 1.45825C11.8734 1.45824 13.3073 1.45824 14.4268 1.60874C15.574 1.76299 16.4842 2.08552 17.1994 2.80068C17.9146 3.51584 18.2371 4.42606 18.3913 5.57327C18.5418 6.69279 18.5418 8.1267 18.5418 9.95225V10.0476C18.5418 11.8732 18.5418 13.3071 18.3913 14.4266C18.2371 15.5738 17.9146 16.484 17.1994 17.1992C16.4842 17.9143 15.574 18.2368 14.4268 18.3911C13.3073 18.5416 11.8734 18.5416 10.0478 18.5416H9.9525C8.12691 18.5416 6.69303 18.5416 5.57351 18.3911C4.4263 18.2368 3.51609 17.9143 2.80092 17.1992C2.08576 16.484 1.76323 15.5738 1.60899 14.4266C1.45848 13.3071 1.45849 11.8732 1.4585 10.0476V9.95225C1.45849 8.12668 1.45848 6.69279 1.60899 5.57327C1.76323 4.42606 2.08576 3.51584 2.80092 2.80068C3.51609 2.08552 4.4263 1.76299 5.57351 1.60874C6.69303 1.45824 8.12693 1.45824 9.9525 1.45825H10.0478ZM14.0647 6.68357C14.2856 7.08736 14.1372 7.59373 13.7335 7.81455C12.5907 8.4395 11.5175 9.74784 10.698 11.0026C10.2986 11.6143 9.97808 12.1838 9.75766 12.6003C9.64766 12.808 9.56316 12.9767 9.50675 13.092L9.42483 13.2632C9.29608 13.5446 9.02191 13.7318 8.71291 13.7488C8.40383 13.7658 8.11072 13.6102 7.95181 13.3445C7.69288 12.9116 7.28144 12.5164 6.90014 12.215C6.71486 12.0685 6.5481 11.953 6.42909 11.8751L6.25385 11.7655C5.85427 11.5373 5.71514 11.0286 5.9431 10.6289C6.1711 10.2291 6.68004 10.0898 7.07982 10.3178L7.34235 10.4809C7.49418 10.5803 7.70241 10.7247 7.93381 10.9076C8.11065 11.0474 8.30836 11.2155 8.508 11.4092C8.722 11.0247 8.9895 10.5708 9.30258 10.0913C10.1498 8.794 11.4099 7.18564 12.9338 6.35227C13.3376 6.13144 13.8439 6.27977 14.0647 6.68357Z" fill="#17B26A"/>
@@ -59,8 +62,36 @@
           </div>
         </div>
       </div>
+
+      <div class="p-6 space-y-8">
+        <h2 class="text-2xl font-bold text-gray-800">🔍 Top luật kết hợp theo độ tin cậy</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div v-for="(rule, index) in topConfidence" :key="'conf-' + index" class="p-4 bg-white rounded-2xl shadow">
+            <p class="text-sm text-gray-600">
+              Nếu khách mua: <span class="font-medium text-blue-600">{{ rule.antecedents.join(', ') }}</span>
+            </p>
+            <p class="text-sm text-gray-600">
+              Thì thường mua: <span class="font-medium text-green-600">{{ rule.consequents.join(', ') }}</span>
+            </p>
+            <p class="text-xs text-gray-400 mt-1">Confidence: {{ rule.confidence }}, Support: {{ rule.support }}</p>
+          </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-800">🔥 Top combo phổ biến nhất theo Support</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div v-for="(combo, index) in topSupport" :key="'supp-' + index" class="p-4 bg-white rounded-2xl shadow">
+            <p class="text-sm text-gray-600">
+              Combo: <span class="font-medium text-pink-600">{{ combo.items.join(', ') }}</span>
+            </p>
+            <p class="text-xs text-gray-400 mt-1">Support: {{ combo.support }}, Confidence: {{ combo.confidence }}</p>
+          </div>
+        </div>
+      </div>
+
+
       <iframe title="btlhtttql1" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=3ba8cefd-0499-42bd-8741-8024852263ab&autoAuth=true&ctid=e7572e92-7aee-4713-a3c4-ba64888ad45f" frameborder="0" allowFullScreen="true"></iframe>
-      
+
+
       <!-- New Admin Features Section -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <!-- Quick News Widget -->
@@ -188,7 +219,9 @@ export default {
           priority: 'normal',
           time: new Date(Date.now() - 30 * 60 * 1000)
         }
-      ]
+      ],
+      topConfidence: [],
+      topSupport: []
     }
   },
   methods: {
@@ -236,12 +269,36 @@ export default {
         this.notificationStats = result.stats;
       }
     },
+    async loadTopCombos(){
+      try {
+        const response = await fetch("http://localhost:5000/api/top-combos");
+        if (!response.ok) throw new Error("Lỗi khi gọi API");
+        const result = await response.json();
+        this.topConfidence = result.top_confidence;
+        this.topSupport = result.top_support
+        console.log(result);
+      } catch (error) {
+        console.error("Lỗi khi tải dữ liệu combo:", error);
+      }
+    }
+  },
+  computed: {
+    revenueClass() {
+      if (this.totalRevenue < 5000000) {
+        return 'bg-red-100 border border-red-400 animate-pulse';
+      } else if (this.totalRevenue < 10000000) {
+        return 'bg-yellow-100 border border-yellow-400 animate-pulse';
+      } else {
+        return 'bg-green-100 border border-green-400 animate-pulse';
+      }
+    }
   },
   async created () {
     await this.loadProducts();
     await this.loadOrders();
     await this.loadOrdersConfirmed();
     await this.loadNotificationStats();
+    await this.loadTopCombos();
   },
 };
 </script>
